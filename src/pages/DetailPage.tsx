@@ -20,6 +20,11 @@ interface Props {
   location: RouteComponentProps;
 }
 
+interface Row {
+  name: string,
+  info: string | number
+}
+
 const DetailPage: React.FC<Props> = ({location} : Props) => {
   const classes = useStyles()
 
@@ -36,7 +41,7 @@ const DetailPage: React.FC<Props> = ({location} : Props) => {
     website
   } = state.exchange
 
-  const rows = [
+  const rows: Row[] = [
     {name: 'Exchange ID:', info:  exchange_id},
     {name: 'Website', info:  website},
     {name: 'Starting:', info:  data_start},
