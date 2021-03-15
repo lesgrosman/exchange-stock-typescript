@@ -17,6 +17,9 @@ interface ExchangeData {
 
 interface CryptoStock {
   cryptoStockExchanges: Exchange[]
+  filter: {
+    count: number
+  }
 }
 
 const MainPage = () => {
@@ -26,7 +29,7 @@ const MainPage = () => {
   const { data } =  useQuery<ExchangeData, ExchangesVars>(GET_EXCHANGES_FILTER, {
     variables: {
       name: input,
-      offset: page - 1,
+      offset: page === 1 ? page - 1 : page - 5
     }
   })
 
@@ -35,8 +38,14 @@ const MainPage = () => {
     setInput(value)
   }
 
-  const exchangesCount: any = data ? data.cryptoStockExchanges.cryptoStockExchanges.length : null
-  const pagesCount: number = exchangesCount && exchangesCount < 5 ? 1 : 30
+  const pagesCount = (count: number): number => {
+    if (count % 5 === 0) {
+      return count / 5
+    }
+    return Math.floor(count / 5) + 1
+  }
+
+  const count: number = data ? data.cryptoStockExchanges.filter.count : 0
 
   return (  
     <Container maxWidth="sm">
@@ -53,11 +62,11 @@ const MainPage = () => {
           })         
       } 
       <Pagination 
-        style={{display: exchangesCount ? "block": "none"}}
+        style={{display: count ? "block": "none"}}
         size="large"
         onChange={(event, page) => setPage(page * 5)}
         page={page === 1 ? page : (page / 5)}
-        count={pagesCount} 
+        count={pagesCount(count)} 
         color="primary" 
       />   
     </Container>

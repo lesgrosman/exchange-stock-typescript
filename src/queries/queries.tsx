@@ -3,6 +3,9 @@ import { gql } from '@apollo/client'
 export const GET_EXCHANGES_FILTER  = gql`
 query getExchangesByFilter($name: String!, $offset: Int!){
   cryptoStockExchanges(filter: {filtrable: {name: $name},  limit: 5, offset: $offset})  {
+    filter {
+      count
+    }
     cryptoStockExchanges {
       exchange_id
       website 
