@@ -24,17 +24,17 @@ interface CryptoStock {
 
 const MainPage = () => {
 
-  const [page, setPage] = useState<number>(1)
+  const [offset, setOffset] = useState<number>(1)
   const [input, setInput] = useState<string>('')
   const { data } =  useQuery<ExchangeData, ExchangesVars>(GET_EXCHANGES_FILTER, {
     variables: {
       name: input,
-      offset: page === 1 ? page - 1 : page - 5
+      offset: offset === 1 ? offset - 1 : offset - 5
     }
   })
 
   const changeFilter = (value: string): void => {
-    setPage(1)
+    setOffset(1)
     setInput(value)
   }
 
@@ -64,8 +64,8 @@ const MainPage = () => {
       <Pagination 
         style={{display: count ? "block": "none"}}
         size="large"
-        onChange={(event, page) => setPage(page * 5)}
-        page={page === 1 ? page : (page / 5)}
+        onChange={(event, page) => setOffset(page * 5)}
+        page={offset === 1 ? offset : (offset / 5)}
         count={pagesCount(count)} 
         color="primary" 
       />   
